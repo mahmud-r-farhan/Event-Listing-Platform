@@ -4,7 +4,7 @@ import EventCard from '../components/EventCard';
 
 function Home() {
   const [events, setEvents] = useState([]);
-  const [categories, setCategories] = useState(['Music', 'Sports', 'Tech', 'Food']);
+  const [categories, setCategories] = useState(['Music', 'Sports', 'Tech', 'Food', 'Meetup', 'others']);
 
   useEffect(() => {
     const fetchEvents = async () => {

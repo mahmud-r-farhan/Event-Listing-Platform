@@ -11,6 +11,9 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.scss';
+import NotFound from './pages/NotFound';
+
 
 function App() {
   return (
@@ -27,6 +30,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />

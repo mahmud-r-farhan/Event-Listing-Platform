@@ -27,18 +27,15 @@ A modern, feature-rich event management platform built with the MERN stack and e
 - User profiles with customizable settings
 - Event bookmarking and interests
 - Social sharing integration
-- Notification preferences
-- Activity history
+
 
 ### Maps & Location
 - Interactive maps using Leaflet
 - Location-based event discovery
-- Distance calculation from user location
-- Venue directions
 - Custom map markers for different event types
 
 ### Image Handling
-- Multiple image upload support
+- Image upload support
 - Image optimization and compression
 - Cloudinary integration for reliable storage
 - Gallery view for event images
@@ -48,8 +45,6 @@ A modern, feature-rich event management platform built with the MERN stack and e
 - Event sharing on social platforms
 - Save events to personal collection
 - Mark interest in events
-- Follow event organizers
-- Event recommendations
 
 ### Security Features
 - JWT token authentication
@@ -339,6 +334,6 @@ MIT License - see [LICENSE](LICENSE) for details
 
 ## Support
 
-- Documentation: [/docs](docs/README.md)
+- Documentation: [/docs](/README.md)
 - Issues: GitHub Issues
 - Community: Discord Server

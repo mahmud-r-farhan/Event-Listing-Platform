@@ -37,6 +37,7 @@ function EventListings() {
           <option value="Sports">Sports</option>
           <option value="Tech">Tech</option>
           <option value="Food">Food</option>
+          <option value="MeetUp">Meetup</option>
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
