@@ -9,6 +9,14 @@ const eventSchema = new mongoose.Schema({
   description: { type: String, required: true },
   category: { type: String, required: true },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  images: [{ type: String, required: true }],
+  coordinates: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true }
+  },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  interested: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  shareCount: { type: Number, default: 0 }
 });
 
 eventSchema.plugin(sanitize);

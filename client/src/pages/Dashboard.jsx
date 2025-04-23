@@ -3,6 +3,8 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import EventCard from '../components/EventCard';
 import { toast } from 'react-toastify';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -15,6 +17,8 @@ function Dashboard() {
     description: '',
     category: '',
   });
+  const [images, setImages] = useState([]);
+  const [coordinates, setCoordinates] = useState({ lat: 51.505, lng: -0.09 });
 
   useEffect(() => {
     const fetchUserEvents = async () => {
@@ -26,15 +30,42 @@ function Dashboard() {
     fetchUserEvents();
   }, [user]);
 
+  const LocationPicker = () => {
+    useMapEvents({
+      click: (e) => {
+        setCoordinates(e.latlng);
+      },
+    });
+    return <Marker position={[coordinates.lat, coordinates.lng]} />;
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages(prev => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/events', form, {
+      const eventData = {
+        ...form,
+        images,
+        coordinates
+      };
+      const res = await axios.post('http://localhost:5000/api/events', eventData, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setEvents([...events, res.data]);
       toast.success('Event created');
       setForm({ name: '', date: '', time: '', location: '', description: '', category: '' });
+      setImages([]);
+      setCoordinates({ lat: 51.505, lng: -0.09 });
     } catch (err) {
       toast.error(err.response?.data?.msg || 'Failed to create event');
     }
@@ -56,7 +87,37 @@ function Dashboard() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">User Dashboard</h1>
       <h2 className="text-2xl font-bold mb-4">Create Event</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 mb-8">
+      <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
+        {/* Image Upload */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Event Images</label>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          />
+          <div className="flex gap-2 mt-2">
+            {images.map((img, idx) => (
+              <img key={idx} src={img} alt="preview" className="w-20 h-20 object-cover rounded" />
+            ))}
+          </div>
+        </div>
+
+        {/* Map Location Picker */}
+        <div className="h-[400px] rounded-lg overflow-hidden">
+          <MapContainer
+            center={[coordinates.lat, coordinates.lng]}
+            zoom={13}
+            className="h-full"
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <LocationPicker />
+          </MapContainer>
+        </div>
+
+        {/* Existing form fields */}
         <input
           type="text"
           placeholder="Event Name"

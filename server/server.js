@@ -7,12 +7,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/profile', require('./routes/profile'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

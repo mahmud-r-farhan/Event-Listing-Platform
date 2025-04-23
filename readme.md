@@ -1,59 +1,116 @@
-# Event Listing Platform
+# Event Listing Platform (ELP)
 
-A full-stack web application for discovering, saving, and managing local events. Built with the **MERN stack** (MongoDB, Express.js, React, Node.js) using **Vite** for the frontend and **Tailwind CSS** for styling.
+A modern, feature-rich event management platform built with the MERN stack and enhanced with real-time maps, image handling, and social features.
 
 ## Table of Contents
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Setup Instructions](#setup-instructions)
+- [Key Features](#key-features)
+- [Technical Stack](#technical-stack)
+- [Installation](#installation)
 - [How It Works](#how-it-works)
 - [API Documentation](#api-documentation)
 - [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
 - [License](#license)
+- [Support](#support)
 
-## Features
-- **User Authentication**: Secure login/registration with JWT and bcrypt.
-- **Event Management**: Authenticated users can create, update, and delete events.
-- **Event Browsing**: Filter events by category or location.
-- **Event Saving**: Logged-in users can save events to their profile.
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS.
-- **Notifications**: Toast notifications for user actions.
-- **Six Pages**:
-  - Homepage: Banner, upcoming events, categories.
-  - Event Listings: Filterable event list.
-  - Event Detail: Detailed event view with save option.
-  - Login: User authentication.
-  - Register: New user registration.
-  - User Dashboard: Manage user-created events.
-- **Environment Variables**: Configurable API base URL via `.env`.
+## Key Features
 
-## Technologies Used
-- **Frontend**:
-  - React (v18) with Vite
-  - Tailwind CSS
-  - react-router-dom (routing)
-  - axios (API requests)
-  - react-toastify (notifications)
-- **Backend**:
-  - Node.js
-  - Express.js
-  - MongoDB with Mongoose
-  - bcrypt (password hashing)
-  - jsonwebtoken (JWT authentication)
-  - mongoose-sanitize (query sanitization)
-  - cors, dotenv
-- **Development Tools**:
-  - npm
-  - Vite (frontend build tool)
-  - MongoDB Atlas or local MongoDB
+### Event Management
+- Create events with multiple images and map location
+- Interactive map location picker using Leaflet
+- Rich text event descriptions
+- Event categorization and tagging
+- Event status (upcoming, ongoing, past)
 
-## Setup Instructions
+### User Features
+- Secure authentication with JWT
+- User profiles with customizable settings
+- Event bookmarking and interests
+- Social sharing integration
+- Notification preferences
+- Activity history
+
+### Maps & Location
+- Interactive maps using Leaflet
+- Location-based event discovery
+- Distance calculation from user location
+- Venue directions
+- Custom map markers for different event types
+
+### Image Handling
+- Multiple image upload support
+- Image optimization and compression
+- Cloudinary integration for reliable storage
+- Gallery view for event images
+- Thumbnail generation
+
+### Social Features
+- Event sharing on social platforms
+- Save events to personal collection
+- Mark interest in events
+- Follow event organizers
+- Event recommendations
+
+### Security Features
+- JWT token authentication
+- Password hashing with bcrypt
+- Input sanitization
+- CORS protection
+- Rate limiting
+- XSS protection
+
+## Technical Stack
+
+### Frontend
+```javascript
+{
+  "framework": "React 18 with Vite",
+  "styling": ["Tailwind CSS", "Framer Motion"],
+  "maps": "React Leaflet",
+  "state": "Context API",
+  "notifications": "React Toastify",
+  "imageHandling": "Cloudinary React"
+}
+```
+
+### Backend
+```javascript
+{
+  "runtime": "Node.js",
+  "framework": "Express.js",
+  "database": "MongoDB",
+  "security": ["bcrypt", "JWT", "helmet"],
+  "imageStorage": "Cloudinary",
+  "validation": ["mongoose-sanitize", "express-validator"]
+}
+```
+
+## Installation
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or MongoDB Atlas)
-- npm (v8 or higher)
+```bash
+node >= 16.0.0
+npm >= 8.0.0
+MongoDB >= 4.4
+```
+
+### Environment Variables
+
+Backend (.env):
+```plaintext
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+PORT=5000
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+Frontend (.env):
+```plaintext
+VITE_API_BASE_URL=http://localhost:5000/api
+VITE_MAPS_API_KEY=your_maps_api_key
+```
 
 ### Backend Setup
 1. Navigate to the `server/` directory:
@@ -75,6 +132,9 @@ A full-stack web application for discovering, saving, and managing local events.
     MONGO_URI=mongodb://localhost:27017/event_platform
     JWT_SECRET=your_jwt_secret_key
     PORT=5000
+    CLOUDINARY_CLOUD_NAME=your_cloud_name
+    CLOUDINARY_API_KEY=your_api_key
+    CLOUDINARY_API_SECRET=your_api_secret
     ```
     
 4.  Start the backend:
@@ -84,9 +144,8 @@ A full-stack web application for discovering, saving, and managing local events.
     ```bash
     node server.js | npx nodemon server.js
     ```
-    
 
-# Frontend Setup
+### Frontend Setup
 
 1.  Navigate to the client/ directory:
     
@@ -108,6 +167,7 @@ A full-stack web application for discovering, saving, and managing local events.
     
     ```text
     VITE_API_BASE_URL=http://localhost:5000/api
+    VITE_MAPS_API_KEY=your_maps_api_key
     ```
     
 4.  Initialize Tailwind CSS (if not already set up):
@@ -125,7 +185,6 @@ A full-stack web application for discovering, saving, and managing local events.
     ```bash
     npm run dev
     ```
-    
 
 Running the Application
 
@@ -134,9 +193,8 @@ Running the Application
 -   Frontend: http://localhost:5173
     
 -   Ensure MongoDB is running.
-    
 
-# How It Works
+## How It Works
 
 1.  Guest Users:
     
@@ -173,69 +231,62 @@ Running the Application
     -   Frontend uses VITE_API_BASE_URL for API requests.
         
     -   Backend uses MONGO_URI, JWT_SECRET, PORT.
-        
 
-# API Documentation
+## API Documentation
 
 Base URL: http://localhost:5000/api
 
-Auth Endpoints
+### Authentication
+```javascript
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/verify
+POST /api/auth/refresh-token
+```
 
-1.  POST /auth/register
-    
-    -   Body: { "username": "string", "email": "string", "password": "string" }
-        
-    -   Response: { "token": "jwt_token" }
-        
-2.  POST /auth/login
-    
-    -   Body: { "email": "string", "password": "string" }
-        
-    -   Response: { "token": "jwt_token" }
-        
+### Events
+```javascript
+GET /api/events
+POST /api/events
+GET /api/events/:id
+PUT /api/events/:id
+DELETE /api/events/:id
+POST /api/events/:id/like
+POST /api/events/:id/save
+POST /api/events/:id/share
+```
 
-Event Endpoints
+### User Profile
+```javascript
+GET /api/profile
+PUT /api/profile
+GET /api/profile/saved-events
+GET /api/profile/created-events
+PUT /api/profile/notifications
+```
 
-1.  GET /events
-    
-    -   Query: category, location (optional)
-        
-    -   Response: Array of events
-        
-2.  GET /events/:id
-    
-    -   Response: Single event
-        
-3.  POST /events
-    
-    -   Headers: Authorization: Bearer <token>
-        
-    -   Body: Event details
-        
-    -   Response: Created event
-        
-4.  PUT /events/:id
-    
-    -   Headers: Authorization: Bearer <token>
-        
-    -   Body: Updated fields
-        
-    -   Response: Updated event
-        
-5.  DELETE /events/:id
-    
-    -   Headers: Authorization: Bearer <token>
-        
-    -   Response: { "msg": "Event deleted" }
-        
-6.  POST /events/save/:id
-    
-    -   Headers: Authorization: Bearer <token>
-        
-    -   Response: { "msg": "Event saved" }
-        
+## Security Measures
 
-# Folder Structure
+### Authentication
+- JWT tokens with expiration
+- Refresh token rotation
+- Secure password hashing
+- Rate limiting on auth endpoints
+
+### Data Protection
+- Input sanitization
+- XSS protection
+- CSRF tokens
+- Secure headers with Helmet
+- Request validation
+
+### Image Security
+- File type validation
+- Size limits
+- Secure upload to Cloudinary
+- Image optimization
+
+## Folder Structure
 
 ```
 event-listing-platform/
@@ -265,19 +316,29 @@ event-listing-platform/
 └── .gitignore
 ```
 
-# Contributing
+## Contributing
 
-1.  Fork the repository.
-    
-2.  Create a feature branch (git checkout -b feature-name).
-    
-3.  Commit changes (git commit -m "Add feature").
-    
-4.  Push to the branch (git push origin feature-name).
-    
-5.  Open a pull request.
-    
+We welcome contributions! Please follow our [Contribution Guidelines](CONTRIBUTING.md).
 
-# **License**
+### Development Workflow
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
 
-MIT License. See LICENSE for details.
+### Code Style
+- ESLint configuration
+- Prettier formatting
+- TypeScript for type safety
+- Component documentation
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+## Support
+
+- Documentation: [/docs](docs/README.md)
+- Issues: GitHub Issues
+- Community: Discord Server
