@@ -131,7 +131,7 @@ Running the Application
 
 -   Backend: http://localhost:5000
     
--   Frontend: http://localhost:3000
+-   Frontend: http://localhost:5173
     
 -   Ensure MongoDB is running.
     
