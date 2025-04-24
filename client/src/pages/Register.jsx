@@ -11,13 +11,15 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await register(username, email, password);
-    navigate('/dashboard');
+    const success = await register(username, email, password);
+    if (success) {
+      navigate('/dashboard');
+    }
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-md">
-      <h1 className="text-3xl font-bold mb-4">Register</h1>
+    <div className="container mx-auto h-[80dvh] p-4 max-w-md">
+      <h1 className="text-3xl text-center font-bold mb-4">Register</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label>Username</label>

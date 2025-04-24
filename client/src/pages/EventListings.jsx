@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventCard from '../components/EventCard';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function EventListings() {
   const [events, setEvents] = useState([]);
   const [category, setCategory] = useState('');
@@ -12,7 +14,7 @@ function EventListings() {
       const params = {};
       if (category) params.category = category;
       if (location) params.location = location;
-      const res = await axios.get('http://localhost:5000/api/events', { params });
+      const res = await axios.get(`${API_BASE_URL}/events`, { params });
       setEvents(res.data);
     };
     fetchEvents();

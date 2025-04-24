@@ -10,8 +10,10 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
-    navigate('/dashboard');
+    const success = await login(email, password);
+    if (success) {
+      navigate('/dashboard');
+    }
   };
 
   return (

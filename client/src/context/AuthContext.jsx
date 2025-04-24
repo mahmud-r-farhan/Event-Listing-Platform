@@ -24,10 +24,13 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
       setUser({ token: res.data.token });
       toast.success('Logged in successfully');
+      return true; 
     } catch (err) {
       toast.error(err.response?.data?.msg || 'Login failed');
+      return false;
     }
   };
+  
 
   const register = async (username, email, password) => {
     try {
@@ -40,10 +43,13 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
       setUser({ token: res.data.token });
       toast.success('Registered successfully');
+      return true; // 👈 indicate success
     } catch (err) {
       toast.error(err.response?.data?.msg || 'Registration failed');
+      return false; // 👈 indicate failure
     }
   };
+  
 
   const logout = () => {
     localStorage.removeItem('token');

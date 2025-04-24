@@ -13,8 +13,7 @@ function Header() {
 
   const navLinks = [
     { path: '/events', label: 'Events' },
-    { path: '/categories', label: 'Categories' },
-    { path: '/calendar', label: 'Calendar' },
+    ...(user ? [{ path: '/profile', label: 'Profile' }] : [])
   ];
 
   const handleLogout = () => {
@@ -23,22 +22,30 @@ function Header() {
     setIsOpen(false);
   };
 
+  const menuVariants = {
+    open: { height: 'auto', opacity: 1, transition: { duration: 0.3 } },
+    closed: { height: 0, opacity: 0, transition: { duration: 0.3 } },
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
+        <Link
+          to="/"
+          className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent"
+        >
           EventHub
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map(({ path, label }) => (
             <Link
               key={path}
               to={path}
-              className={`font-medium transition-colors duration-200 ${
-                location.pathname === path ? 'text-primary' : 'text-gray-700 hover:text-primary'
+              className={`text-base font-medium transition-colors duration-200 ${
+                location.pathname === path
+                  ? 'text-blue-500'
+                  : 'text-gray-700 hover:text-blue-500'
               }`}
             >
               {label}
@@ -46,11 +53,13 @@ function Header() {
           ))}
         </div>
 
-        {/* Desktop Actions */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <Link to="/dashboard" className="flex items-center space-x-2 text-gray-700 hover:text-primary">
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-500 transition-colors"
+              >
                 <FaUserCircle className="w-5 h-5" />
                 <span>Dashboard</span>
               </Link>
@@ -58,61 +67,67 @@ function Header() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleLogout}
-                className="btn-primary"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 Logout
               </motion.button>
             </>
           ) : (
             <>
-              <Link to="/login" className="text-gray-700 hover:text-primary font-medium">
+              <Link
+                to="/login"
+                className="text-gray-700 hover:text-blue-500 font-medium transition-colors"
+              >
                 Login
               </Link>
-              <Link to="/register" className="btn-primary">
+              <Link
+                to="/register"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
                 Register
               </Link>
             </>
           )}
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-gray-700 hover:text-primary focus:outline-none"
+          className="md:hidden p-2 text-gray-700 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
           {isOpen ? <HiX className="w-6 h-6" /> : <HiMenu className="w-6 h-6" />}
         </button>
       </nav>
 
-      {/* Mobile Nav */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white border-t border-gray-200 px-4 pb-4"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="md:hidden bg-white border-t border-gray-100 px-4 pb-4"
           >
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col gap-2">
               {navLinks.map(({ path, label }) => (
                 <Link
                   key={path}
                   to={path}
-                  className={`block py-2 font-medium transition-colors ${
-                    location.pathname === path ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                  className={`block py-2 text-base font-medium transition-colors ${
+                    location.pathname === path
+                      ? 'text-blue-500'
+                      : 'text-gray-700 hover:text-blue-500'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {label}
                 </Link>
               ))}
-
               {user ? (
                 <>
                   <Link
                     to="/dashboard"
-                    className="block py-2 text-gray-700 hover:text-primary font-medium"
+                    className="block py-2 text-gray-700 hover:text-blue-500 font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     Dashboard
@@ -120,7 +135,7 @@ function Header() {
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={handleLogout}
-                    className="mt-2 btn-primary w-full"
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                   >
                     Logout
                   </motion.button>
@@ -129,14 +144,14 @@ function Header() {
                 <>
                   <Link
                     to="/login"
-                    className="block py-2 text-gray-700 hover:text-primary font-medium"
+                    className="block py-2 text-gray-700 hover:text-blue-500 font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="btn-primary w-full mt-2"
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     Register

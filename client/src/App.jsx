@@ -11,7 +11,6 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.scss';
 import NotFound from './pages/NotFound';
 
 

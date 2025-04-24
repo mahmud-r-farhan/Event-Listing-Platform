@@ -4,57 +4,67 @@ import { FaCalendar, FaClock, FaMapMarkerAlt, FaHeart } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 function EventCard({ event }) {
+  const cardVariants = {
+    hover: { y: -8, transition: { duration: 0.3 } },
+    initial: { y: 0 },
+  };
+
   return (
     <motion.div
-      whileHover={{ y: -5 }}
-      className="card overflow-hidden group"
+      variants={cardVariants}
+      whileHover="hover"
+      initial="initial"
+      className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg"
+      role="article"
+      aria-labelledby={`event-${event._id}`}
     >
       <div className="relative">
-        <img 
-          src={event.images[0]} 
+        <img
+          src={event.images[0]}
           alt={event.name}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-48 sm:h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-4 right-4">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="p-2 bg-white/80 backdrop-blur-sm rounded-full text-pink-500 hover:bg-white transition-colors"
-          >
-            <FaHeart className="w-5 h-5" />
-          </motion.button>
-        </div>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="absolute top-3 right-3 p-2 bg-white/90 rounded-full text-pink-500 hover:bg-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+          aria-label="Add to favorites"
+        >
+          <FaHeart className="w-5 h-5" />
+        </motion.button>
       </div>
 
-      <div className="p-4 space-y-3">
-        <div className="flex items-start justify-between">
-          <h3 className="font-semibold text-lg text-gray-800 line-clamp-2">
+      <div className="p-4 sm:p-5 space-y-3">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
+          <h3
+            id={`event-${event._id}`}
+            className="text-lg sm:text-xl font-semibold text-gray-800 line-clamp-2"
+          >
             {event.name}
           </h3>
-          <span className="px-3 py-1 bg-blue-100 text-blue-600 text-sm font-medium rounded-full">
+          <span className="px-3 py-1 bg-blue-100 text-blue-600 text-xs sm:text-sm font-medium rounded-full">
             {event.category}
           </span>
         </div>
 
         <div className="space-y-2 text-sm text-gray-600">
-          <p className="flex items-center space-x-2">
+          <p className="flex items-center gap-2">
             <FaCalendar className="w-4 h-4 text-gray-400" />
             <span>{new Date(event.date).toLocaleDateString()}</span>
           </p>
-          <p className="flex items-center space-x-2">
+          <p className="flex items-center gap-2">
             <FaClock className="w-4 h-4 text-gray-400" />
             <span>{event.time}</span>
           </p>
-          <p className="flex items-center space-x-2">
+          <p className="flex items-center gap-2">
             <FaMapMarkerAlt className="w-4 h-4 text-gray-400" />
             <span className="line-clamp-1">{event.location}</span>
           </p>
         </div>
 
-        <Link 
+        <Link
           to={`/events/${event._id}`}
-          className="block mt-4 text-center py-2 border-2 border-primary text-primary font-medium rounded-lg
-            hover:bg-primary hover:text-white transition-colors duration-200"
+          className="block text-center py-2 px-4 border-2 border-blue-500 text-blue-500 font-medium rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           View Details
         </Link>
